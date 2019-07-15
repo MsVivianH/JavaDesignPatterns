@@ -1,14 +1,21 @@
 package com.designpatterns.base;
 
+import com.designpatterns.Visitor.Bearings;
+import com.designpatterns.Visitor.Spokes;
+import com.designpatterns.Visitor.WheelVisitorInterface;
 
 public abstract class AbstractWheel implements WheelInterface{
 
     private int size;
     private boolean wide;
+    private Spokes spokes;
+    private Bearings bearings;
 
     public AbstractWheel(int size, boolean wide) {
         this.size = size;
         this.wide = wide;
+        spokes = new Spokes();
+        bearings = new Bearings();
     }
 
     @Override
@@ -19,6 +26,14 @@ public abstract class AbstractWheel implements WheelInterface{
     @Override
     public boolean isWide() {
         return wide;
+
+    }
+
+    @Override
+    public void acceptVisitor(WheelVisitorInterface visitor) {
+        spokes.acceptVisitor(visitor);
+        bearings.acceptVisitor(visitor);
+        visitor.visit(this);
 
     }
 

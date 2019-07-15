@@ -11,22 +11,27 @@ import com.designpatterns.Observer.SpeedMoniter;
 import com.designpatterns.Observer.Speedometer;
 import com.designpatterns.Observor2.SpeedMonitor;
 import com.designpatterns.Singleton.SerialNumberGenerator;
+import com.designpatterns.Visitor.WheelDiagnostics;
+import com.designpatterns.Visitor.WheelInventory;
 import com.designpatterns.abstractfactory.AbstractBikeFactory;
 import com.designpatterns.abstractfactory.BikeFrameInterface;
 import com.designpatterns.abstractfactory.BikeSeatInterface;
 import com.designpatterns.abstractfactory.RoadBikeFactory;
-import com.designpatterns.base.BikeInterface;
-import com.designpatterns.base.NarrowWheel;
-import com.designpatterns.base.RoadBike;
-import com.designpatterns.base.Touring;
+import com.designpatterns.adapter.UltraWheel;
+import com.designpatterns.adapter.UltraWheelAdapter;
+import com.designpatterns.base.*;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 
 public class Main {
 
     public static void main(String[] args) {
-        observerExample2();
+        adapterExample();
+        //visitorExample();
+        //observerExample2();
         //observerExample1();
         //iteratorExample2();
         //iteratorExample1();
@@ -35,6 +40,26 @@ public class Main {
         ///abstractFactoryExample();
     } // end Main Method
 
+    private static void adapterExample(){
+        UltraWheel ultraWheel = new UltraWheel(28);
+        List<WheelInterface> wheels = new ArrayList<>();
+        wheels.add(new NarrowWheel(24));
+        wheels.add(new NarrowWheel(20));
+        wheels.add(new WideWheel(24));
+        wheels.add(new UltraWheelAdapter(ultraWheel));
+        wheels.add(new UltraWheelAdapter(new UltraWheel(26)));
+
+        for(WheelInterface wheel : wheels) {
+            System.out.println(wheel);
+        }
+    } //end method
+
+
+    private static void visitorExample() {
+        WheelInterface wheel = new WideWheel(24);
+        wheel.acceptVisitor(new WheelDiagnostics());
+        wheel.acceptVisitor(new WheelInventory());
+    }
     private static void observerExample2() {
         com.designpatterns.Observor2.Speedometer speed
                 = new com.designpatterns.Observor2.Speedometer();
